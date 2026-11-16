@@ -1,5 +1,20 @@
 # Direct-Mapped Cache Controller Using Verilog HDL
 
+## Team Members
+
+| Name | Enrollment No. | Email |
+|---|---|---|
+| Kavya Saraswat | 2401010220 | kavya.saraswat2024@nst.rishihood.edu.in |
+| Rahul Kumar Dwivedi | 2401010368 | rahul.dwivedi2024@nst.rishihood.edu.in |
+| Akash Kumar Gautam | 2401010050 | akash.gautam2024@nst.rishihood.edu.in |
+| Sahil Chand | 2401020104 | sahil.chand2024@nst.rishihood.edu.in |
+| Harendra Chokker | 2401010179 | — |
+
+**Programme:** B.Tech. Computer Science and Artificial Intelligence
+**Institution:** Rishihood University, Sonipat, Haryana, India
+
+---
+
 ## 1. Project Overview
 
 This project implements a **Direct-Mapped Cache Controller** using Verilog Hardware Description Language (HDL).
