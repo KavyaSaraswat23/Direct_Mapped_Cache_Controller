@@ -1,1 +1,14 @@
+# macOS
 .DS_Store
+
+# Simulation outputs
+simulation/cache_sim
+simulation/*.vcd
+
+# Icarus Verilog
+*.vvp
+
+# Editor backups
+*~
+*.swp
+*.swo
