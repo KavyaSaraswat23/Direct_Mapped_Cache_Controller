@@ -2,8 +2,8 @@
 
 ## Team Members
 
-| Name | Enrollment No. | Email |
-|---|---|---|
+| Name | Enrollment No. 
+|---|---
 | Kavya Saraswat | 2401010220 
 | Rahul Kumar Dwivedi | 2401010368 
 | Akash Kumar Gautam | 2401010050 
