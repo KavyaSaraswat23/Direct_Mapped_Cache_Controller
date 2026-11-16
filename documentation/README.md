@@ -30,7 +30,42 @@ The cache controller manages CPU read and write requests, detects cache hits and
 
 ## 2. Cache Architecture and Memory Organization
 
-### 2.1 Cache Configuration
+### 2.1 System Architecture Diagram
+
+![Direct-Mapped Cache Architecture](architecture_diagram.png)
+
+```mermaid
+graph TD
+    CPU["CPU / Testbench"]
+    Top["Top Module"]
+    AD["Address Decoder<br/>Tag: 22 bits<br/>Index: 6 bits<br/>Offset: 4 bits"]
+    TagRAM["Tag RAM<br/>22-bit tag"]
+    ValidRAM["Valid RAM<br/>1-bit valid"]
+    TC["Tag Comparator"]
+    CC["Cache Controller<br/>9-State FSM"]
+    MemReq["mem_req / mem_ready"]
+    Mem["Main Memory Model<br/>256 × 128-bit entries"]
+    ReadData["128-bit read data"]
+    DataRAM["Data RAM<br/>128-bit block"]
+
+    CPU --> Top
+    Top --> AD
+    Top --> CC
+    AD --> TagRAM
+    AD --> ValidRAM
+    AD --> DataRAM
+    TagRAM --> TC
+    ValidRAM --> TC
+    TC --> CC
+    CC --> CPU
+    CC --> DataRAM
+    CC <--> MemReq
+    MemReq <--> Mem
+    Mem --> ReadData
+    ReadData --> DataRAM
+```
+
+### 2.2 Cache Configuration
 
 The proposed cache uses a direct-mapped organization. Each main memory block maps to exactly one cache line, determined by the index bits of the memory address.
 
@@ -48,7 +83,7 @@ The cache configuration is:
 | Index width | 6 bits |
 | Offset width | 4 bits |
 
-### 2.2 Address Format
+### 2.3 Address Format
 
 The 32-bit CPU address is divided into three fields:
 
@@ -60,7 +95,7 @@ The 32-bit CPU address is divided into three fields:
 
 The address decoder extracts these three fields from the CPU address.
 
-### 2.3 Cache Organization
+### 2.4 Cache Organization
 
 The cache contains 64 lines. Each line stores:
 
@@ -74,7 +109,7 @@ The total cache data capacity is:
 
 The tag and valid-bit storage are additional metadata and are not included in the 1 KB data capacity.
 
-### 2.4 Direct-Mapped Address Mapping
+### 2.5 Direct-Mapped Address Mapping
 
 The index field selects the cache line.
 
@@ -87,9 +122,9 @@ For a given CPU address:
 
 Because each memory block maps to only one cache line, two different memory blocks with the same index can replace one another.
 
-### 3. Cache Operation and Write Policies
+## 3. Cache Operation and Write Policies
 
-## 3.1 Cache Read Operation
+### 3.1 Cache Read Operation
 
 When the CPU sends a read request, the cache controller performs the following steps:
 
@@ -284,10 +319,12 @@ Direct-Mapped-Cache-Project/
 │   └── cache_waveform.vcd
 │
 ├── documentation/
-│   └── README.md
+│   ├── README.md
+│   ├── architecture_diagram.png
+│   └── Cache_Controller_IEEE_Paper.docx
 │
 └── report/
-</text>
+```
 
 ## 7. Simulation and Verification
 
