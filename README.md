@@ -420,4 +420,4 @@ Consequently, uninitialized tag and data values are ignored until a cache line i
 
 The design has been tested using directed testbench scenarios covering read hits, read misses, write hits, write misses, no-write-allocate behavior, and cache replacement.
 
-These tests verify the selected functional scenarios but do not constitute exhaustive or formal verification of every possible input and timing condition.
+These tests verify the selected functional scenarios but do not constitute exhaustive or  formal verification of every possible input and timing condition.
