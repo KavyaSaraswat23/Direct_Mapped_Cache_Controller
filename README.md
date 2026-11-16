@@ -20,6 +20,7 @@ The cache controller manages CPU read and write requests, detects cache hits and
 - Nine-state Finite State Machine (FSM).
 - Verilog-based simulation and functional verification.
 
+
 ### Tools Used
 
 - **Verilog HDL:** Hardware design.
