@@ -28,6 +28,12 @@ The cache controller manages CPU read and write requests, detects cache hits and
 - **Surfer:** Waveform visualization.
 - **Antigravity IDE:** Code development and project management.
 
+### Demo / Simulation Video
+
+A walkthrough of the simulation, waveform analysis, and FSM state transitions is available here:
+
+▶️ [Watch Demo on Google Drive](https://drive.google.com/drive/folders/130m7BiBOCHEPMafs-8uzyc5XFlS5dqOm)
+
 ## 2. Cache Architecture and Memory Organization
 
 ### 2.1 System Architecture Diagram
