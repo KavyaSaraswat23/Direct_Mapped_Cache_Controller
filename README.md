@@ -421,7 +421,7 @@ At the end of simulation, the testbench reports OVERALL RESULT: PASS only when t
 
 The project is organized into the following directories:
 text
-Direct-Mapped-Cache-Project/
+Direct_Mapped_Cache_Controller/
 │
 ├── src/
 │   ├── address_decoder.v
@@ -434,29 +434,23 @@ Direct-Mapped-Cache-Project/
 │   └── top_module.v
 │
 ├── testbench/
-│   ├── cache_tb.v
-│   └── cache_tb_backup.v
+│   └── cache_tb.v
 │
 ├── simulation/
-│   ├── cache_sim
-│   ├── cache_waveform.vcd
 │   └── screenshots/
-│       ├── cache_replacement.png
-│       ├── read_hit.png
-│       ├── read_miss.png
-│       ├── simulation_results.png
-│       ├── write_hit.png
-│       └── write_miss.png
 │
 ├── documentation/
 │   ├── README.md
-│   ├── architecture_diagram.png
-│   └── Cache_Controller_IEEE_Paper.docx
+│   └── architecture_diagram.png
 │
-└── report/
-    ├── Cache_Controller_IEEE_Paper (1).docx
-    └── simulation_log.txt
-
+├── report/
+│   ├── Cache_Controller_IEEE_Paper_Final.docx
+│   ├── Cache_Controller_IEEE_Paper_Final.pdf
+│   └── simulation_log.txt
+│
+├── Makefile
+├── README.md
+└── .gitignore
 
 ## 7. Simulation and Verification
 
