@@ -1,0 +1,77 @@
+VCD info: dumpfile simulation/cache_waveform.vcd opened for output.
+Time=0 | Reset=1 | Request=0 | Write=0 | Ready=x | Read Data=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+Time=5000 | Reset=1 | Request=0 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
+Time=20000 | Reset=0 | Request=0 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
+Time=30000 | Reset=0 | Request=1 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
+MEMORY REQUEST DETECTED at time 65000
+Time=85000 | Reset=0 | Request=1 | Write=0 | Ready=1 | Read Data=01010101010101010101010101010101
+READ MISS COMPLETED
+Returned Data = 01010101010101010101010101010101
+TEST 1 - READ MISS: PASS
+Time=90000 | Reset=0 | Request=0 | Write=0 | Ready=1 | Read Data=01010101010101010101010101010101
+Time=95000 | Reset=0 | Request=0 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
+Time=100000 | Reset=0 | Request=1 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
+Time=125000 | Reset=0 | Request=1 | Write=0 | Ready=1 | Read Data=01010101010101010101010101010101
+READ HIT COMPLETED
+Returned Data = 01010101010101010101010101010101
+TEST 2 - READ HIT: PASS
+Time=130000 | Reset=0 | Request=0 | Write=0 | Ready=1 | Read Data=01010101010101010101010101010101
+Time=135000 | Reset=0 | Request=0 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
+Time=140000 | Reset=0 | Request=1 | Write=1 | Ready=0 | Read Data=00000000000000000000000000000000
+MEMORY REQUEST DETECTED at time 175000
+Time=185000 | Reset=0 | Request=1 | Write=1 | Ready=1 | Read Data=00000000000000000000000000000000
+WRITE HIT COMPLETED
+TEST 3 - WRITE HIT: PASS
+Time=190000 | Reset=0 | Request=0 | Write=1 | Ready=1 | Read Data=00000000000000000000000000000000
+Time=195000 | Reset=0 | Request=0 | Write=1 | Ready=0 | Read Data=00000000000000000000000000000000
+Time=200000 | Reset=0 | Request=1 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
+Time=225000 | Reset=0 | Request=1 | Write=0 | Ready=1 | Read Data=aabbccddeeff00112233445566778899
+READ AFTER WRITE COMPLETED
+Returned Data = aabbccddeeff00112233445566778899
+TEST 4 - READ AFTER WRITE: PASS
+Time=230000 | Reset=0 | Request=0 | Write=0 | Ready=1 | Read Data=aabbccddeeff00112233445566778899
+Time=235000 | Reset=0 | Request=0 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
+Time=240000 | Reset=0 | Request=1 | Write=1 | Ready=0 | Read Data=00000000000000000000000000000000
+MEMORY REQUEST DETECTED at time 275000
+Time=285000 | Reset=0 | Request=1 | Write=1 | Ready=1 | Read Data=00000000000000000000000000000000
+WRITE MISS COMPLETED
+TEST 5 - WRITE MISS: PASS
+Time=290000 | Reset=0 | Request=0 | Write=1 | Ready=1 | Read Data=00000000000000000000000000000000
+Time=295000 | Reset=0 | Request=0 | Write=1 | Ready=0 | Read Data=00000000000000000000000000000000
+Time=300000 | Reset=0 | Request=1 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
+MEMORY REQUEST DETECTED at time 335000
+Time=355000 | Reset=0 | Request=1 | Write=0 | Ready=1 | Read Data=11223344556677889900aabbccddeeff
+READ AFTER WRITE MISS COMPLETED
+Returned Data = 11223344556677889900aabbccddeeff
+TEST 6 - READ AFTER WRITE MISS: PASS
+NO-WRITE-ALLOCATE: PASS
+Time=360000 | Reset=0 | Request=0 | Write=0 | Ready=1 | Read Data=11223344556677889900aabbccddeeff
+Time=365000 | Reset=0 | Request=0 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
+CONFLICT TEST - FIRST BLOCK
+Time=370000 | Reset=0 | Request=1 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
+Time=395000 | Reset=0 | Request=1 | Write=0 | Ready=1 | Read Data=aabbccddeeff00112233445566778899
+FIRST BLOCK: PASS
+Time=396000 | Reset=0 | Request=0 | Write=0 | Ready=1 | Read Data=aabbccddeeff00112233445566778899
+Time=405000 | Reset=0 | Request=0 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
+CONFLICT TEST - SECOND BLOCK
+Time=410000 | Reset=0 | Request=1 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
+MEMORY REQUEST DETECTED at time 445000
+Time=465000 | Reset=0 | Request=1 | Write=0 | Ready=1 | Read Data=41414141414141414141414141414141
+SECOND BLOCK: PASS
+Time=466000 | Reset=0 | Request=0 | Write=0 | Ready=1 | Read Data=41414141414141414141414141414141
+Time=475000 | Reset=0 | Request=0 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
+CONFLICT TEST - FIRST BLOCK AFTER REPLACEMENT
+Time=480000 | Reset=0 | Request=1 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
+MEMORY REQUEST DETECTED at time 515000
+Time=535000 | Reset=0 | Request=1 | Write=0 | Ready=1 | Read Data=aabbccddeeff00112233445566778899
+Returned Data = aabbccddeeff00112233445566778899
+CONFLICT TEST: PASS
+Time=536000 | Reset=0 | Request=0 | Write=0 | Ready=1 | Read Data=aabbccddeeff00112233445566778899
+Time=545000 | Reset=0 | Request=0 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
+--------------------------------
+TOTAL MEMORY REQUESTS = 6
+MEMORY REQUEST COUNT: PASS
+--------------------------------
+OVERALL RESULT: PASS
+ALL TESTS PASSED SUCCESSFULLY
+testbench/cache_tb.v:315: $finish called at 550000 (1ps)
