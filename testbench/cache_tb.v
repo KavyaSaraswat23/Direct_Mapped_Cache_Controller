@@ -250,10 +250,12 @@ module cache_tb;
         wait(cpu_ready == 1'b1);
         #1;
 
-        if (cpu_read_data == 128'hAABBCCDDEEFF00112233445566778899)
-            $display("FIRST BLOCK: PASS");
-        else
-            $display("FIRST BLOCK: FAIL");
+        check_test(
+            "CONFLICT TEST - FIRST BLOCK HIT",
+            (cpu_read_data ===
+            128'hAABBCCDDEEFF00112233445566778899) &&
+            (memory_request_count == 4)
+        );
 
         cpu_req = 1'b0;
         wait(cpu_ready == 1'b0);
@@ -269,10 +271,12 @@ module cache_tb;
         wait(cpu_ready == 1'b1);
         #1;
 
-        if (cpu_read_data == 128'h41414141414141414141414141414141)
-            $display("SECOND BLOCK: PASS");
-        else
-            $display("SECOND BLOCK: FAIL");
+        check_test(
+            "CONFLICT TEST - SECOND BLOCK MISS",
+            (cpu_read_data ===
+            128'h41414141414141414141414141414141) &&
+            (memory_request_count == 5)
+        );
 
         cpu_req = 1'b0;
         wait(cpu_ready == 1'b0);
@@ -290,10 +294,12 @@ module cache_tb;
 
         $display("Returned Data = %h", cpu_read_data);
 
-        if (cpu_read_data == 128'hAABBCCDDEEFF00112233445566778899)
-            $display("CONFLICT TEST: PASS");
-        else
-            $display("CONFLICT TEST: FAIL");
+        check_test(
+            "CONFLICT TEST - FIRST BLOCK RELOAD",
+            (cpu_read_data ===
+            128'hAABBCCDDEEFF00112233445566778899) &&
+            (memory_request_count == 6)
+        );
 
         cpu_req = 1'b0;
         wait(cpu_ready == 1'b0);
