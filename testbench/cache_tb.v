@@ -129,7 +129,9 @@ module cache_tb;
 
         check_test(
             "TEST 2 - READ HIT",
-            cpu_read_data === 128'h01010101010101010101010101010101
+            (memory_request_count == 1) &&
+            (cpu_read_data ===
+            128'h01010101010101010101010101010101)
         );
 
         @(negedge clk);
