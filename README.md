@@ -1,74 +1,64 @@
 # Direct-Mapped Cache Controller Using Verilog HDL
 
-A Verilog HDL implementation of a 1 KB Direct-Mapped Cache Controller featuring a nine-state Finite State Machine (FSM), write-through policy, no-write-allocate policy, and functional verification using Icarus Verilog.
-
----
-
 ## Team Members
 
-| Name | Enrollment No. | Email |
-|---|---|---|
-| Kavya Saraswat | 2401010220 | [kavya.saraswat2024@nst.rishihood.edu.in](mailto:kavya.saraswat2024@nst.rishihood.edu.in) |
-| Rahul Kumar Dwivedi | 2401010368 | [rahul.dwivedi2024@nst.rishihood.edu.in](mailto:rahul.dwivedi2024@nst.rishihood.edu.in) |
-| Akash Kumar Gautam | 2401010050 | [akash.gautam2024@nst.rishihood.edu.in](mailto:akash.gautam2024@nst.rishihood.edu.in) |
-| Sahil Chand | 2401020104 | [sahil.chand2024@nst.rishihood.edu.in](mailto:sahil.chand2024@nst.rishihood.edu.in) |
-| Harendra Chokker | 2401010179 | [harender.chhoker2024@nst.rishihood.edu.in](mailto:harender.chhoker2024@nst.rishihood.edu.in) |
+| Name | Enrollment No. 
+|---|---
+| Kavya Saraswat | 2401010220 
+| Rahul Kumar Dwivedi | 2401010368 
+| Akash Kumar Gautam | 2401010050 
+| Sahil Chand | 2401020104 
+| Harendra Chokker | 2401010179 
 
-**Programme:** B.Tech. Computer Science and Artificial Intelligence  
-**Institution:** Rishihood University, Sonipat, Haryana, India  
+**Programme:** B.Tech. Computer Science and Artificial Intelligence
+**Institution:** Rishihood University, Sonipat, Haryana, India
 
 ---
+
 
 ## 1. Project Overview
 
+
 This project implements a **Direct-Mapped Cache Controller** using Verilog Hardware Description Language (HDL).
 
-A cache is a small and fast memory located between the processor and main memory. It stores frequently accessed data blocks to reduce average memory access latency.
 
-The implemented controller manages CPU read and write requests, performs cache lookups, detects cache hits and misses, communicates with main memory, and updates cache contents when required.
+The design demonstrates how a cache memory works between a CPU and main memory to reduce average memory access time. It uses a direct-mapped cache organization, where each block of main memory maps to exactly one cache line.
+
+The cache controller manages CPU read and write requests, detects cache hits and misses, communicates with main memory, and updates cache contents when required.
 
 ### Key Features
 
-- **1 KB direct-mapped cache** organization.
-- **64 cache lines**.
-- **16-byte (128-bit) block size**.
-- **32-bit CPU address**.
-- **22-bit tag, 6-bit index, and 4-bit block offset**.
-- **Nine-state Finite State Machine (FSM)**.
-- **Write-through policy** on writes.
-- **No-write-allocate policy** for write misses.
-- **Modular Verilog implementation** separating controller, datapath RAMs, comparator, and memory.
-- **Behavioral main memory model** (256 blocks of 128 bits each).
-- **Assertion-based testbench** with automated pass/fail verification and failure reporting.
-- **Functional verification** covering cache hits, misses, read-after-write, and conflict replacement.
+- 1 KB direct-mapped cache.
+- 64 cache lines.
+- 16 bytes (128 bits) per cache line.
+- 32-bit CPU address.
+- 22-bit tag, 6-bit index, and 4-bit block offset.
+- Write-through write policy.
+- No-write-allocate policy for write misses.
+- Nine-state Finite State Machine (FSM).
+- Verilog-based simulation and functional verification.
 
-### Tools and Technologies
 
-| Tool | Purpose |
-|---|---|
-| **Verilog HDL** | Hardware description and implementation |
-| **Icarus Verilog (`iverilog`)** | RTL compilation and simulation |
-| **VVP** | Simulation execution runtime |
-| **Surfer** | Waveform visualization (`.vcd`) |
-| **Make** | Build and simulation automation |
-| **Antigravity IDE** | Development environment |
+### Tools Used
 
-### Project Demonstration
+- **Verilog HDL:** Hardware design.
+- **Icarus Verilog:** Compilation and simulation.
+- **VVP:** Simulation execution.
+- **Surfer:** Waveform visualization.
+- **Antigravity IDE:** Code development and project management.
 
-A walkthrough of the simulation, waveform analysis, and FSM transitions is available here:  
-▶️ [Watch Project Demonstration on Google Drive](https://drive.google.com/drive/folders/130m7BiBOCHEPMafs-8uzyc5XFlS5dqOm)
+### Demo / Simulation Video
 
----
+A walkthrough of the simulation, waveform analysis, and FSM state transitions is available here:
 
-## 2. Cache Architecture
+▶️ [Watch Demo on Google Drive](https://drive.google.com/drive/folders/130m7BiBOCHEPMafs-8uzyc5XFlS5dqOm)
 
-### 2.1 Architecture Diagram
+## 2. Cache Architecture and Memory Organization
 
-The architecture consists of an address decoder, cache tag RAM, cache valid RAM, cache data RAM, tag comparator, cache controller, and behavioral main memory. The top module connects these components to form the complete cache system.
+### 2.1 System Architecture Diagram
 
 ![Direct-Mapped Cache Architecture](documentation/architecture_diagram.png)
-
-```mermaid
+mermaid
 graph TD
     CPU["CPU / Testbench Interface"]
     Top["Top Module (top_module.v)"]
@@ -78,7 +68,10 @@ graph TD
     DataRAM["Cache Data RAM<br/>64 × 128-bit"]
     TC["Tag Comparator<br/>Match: valid & (tag == stored)"]
     CC["Cache Controller<br/>9-State FSM"]
-    Mem["Behavioral Main Memory<br/>256 × 128-bit entries"]
+    MemReq["mem_req / mem_ready"]
+    Mem["Main Memory Model<br/>256 × 128-bit entries"]
+    ReadData["128-bit read data"]
+    DataRAM["Data RAM<br/>128-bit block"]
 
     CPU --> Top
     Top --> AD
@@ -91,13 +84,20 @@ graph TD
     TC --> CC
     CC --> CPU
     CC --> DataRAM
-    CC <--> Mem
-    Mem --> DataRAM
+    CC <--> MemReq
+    MemReq <--> Mem
+    Mem --> ReadData
+    ReadData --> DataRAM
 ```
 
 ### 2.2 Cache Configuration
 
-| Parameter | Specification |
+
+The proposed cache uses a direct-mapped organization. Each main memory block maps to exactly one cache line, determined by the index bits of the memory address.
+
+The cache configuration is:
+
+| Parameter | Value |
 |---|---|
 | Cache organization | Direct-mapped |
 | Total cache data capacity | 1 KB |
@@ -109,16 +109,11 @@ graph TD
 | Index width | 6 bits |
 | Offset width | 4 bits |
 
-Each cache line stores a 128-bit data block, a 22-bit tag, and a valid bit.
-
-The total data capacity is calculated as:
-$$\text{Total Data Capacity} = 64 \text{ lines} \times 128 \text{ bits/line} = 8192 \text{ bits} = 1024 \text{ bytes} = 1\text{ KB}$$
-
-Tag and valid-bit storage are additional metadata and are not included in the 1 KB data capacity.
-
 ### 2.3 Address Format
 
+
 The 32-bit CPU address is divided into three fields:
+
 
 | Address Bits | Field | Width | Purpose |
 |---|---|---:|---|
@@ -126,116 +121,222 @@ The 32-bit CPU address is divided into three fields:
 | `[9:4]` | Index | 6 bits | Selects one of 64 cache lines |
 | `[3:0]` | Offset | 4 bits | Represents the byte position within a 16-byte block |
 
-The address decoder extracts all three fields. The offset is decoded but is not used for byte- or word-level selection because the CPU interface transfers complete 128-bit blocks. Only the tag and index participate in cache lookup.
+The address decoder extracts these three fields from the CPU address.
 
-### 2.4 Cache Hit Detection
+### 2.4 Cache Organization
 
-A cache hit occurs when the selected cache line is valid and its stored tag matches the requested tag.
+The cache contains 64 lines. Each line stores:
 
-The hit condition is:
-```verilog
-cache_hit = valid_bit && (requested_tag == stored_tag);
-```
+- **Valid bit (1 bit):** Indicates whether the cache line contains valid data.
+- **Tag (22 bits):** Identifies which main memory block is stored in the line.
+- **Data (128 bits):** Stores one complete 16-byte memory block.
 
-If the condition is false, the controller handles the request as a cache miss.
+The total cache data capacity is:
 
----
+64 × 128 = 8,192 bits = 1 KB.
+
+The tag and valid-bit storage are additional metadata and are not included in the 1 KB data capacity.
+
+### 2.5 Direct-Mapped Address Mapping
+
+The index field selects the cache line.
+
+For a given CPU address:
+
+1. The index selects one of the 64 cache lines.
+2. The stored tag is retrieved from that line.
+3. The requested tag is compared with the stored tag.
+4. The valid bit and tag comparison determine whether the access is a cache hit or miss.
+
+Because each memory block maps to only one cache line, two different memory blocks with the same index can replace one another.
 
 ## 3. Cache Operation and Write Policies
 
-### 3.1 Read Operation
 
-When the CPU issues a read request:
-1. The controller captures the CPU address.
-2. The address decoder extracts the tag, index, and offset.
+### 3.1 Cache Read Operation
+
+When the CPU sends a read request, the cache controller performs the following steps:
+
+1. The CPU provides a 32-bit memory address.
+2. The address decoder extracts the tag, index, and offset fields.
 3. The index selects the corresponding cache line.
-4. The stored tag and valid bit are examined.
-5. The requested tag is compared with the stored tag.
+4. The stored tag and valid bit are retrieved.
+5. The tag comparator checks whether the requested tag matches the stored tag.
 
-#### Read Hit
-If the valid bit is set and the tags match, the requested 128-bit block is returned directly from the cache without accessing main memory.
+**Cache Hit:**
 
-#### Read Miss
-If the selected line is invalid or the tags do not match:
-1. The controller issues a memory read request.
+A cache hit occurs when the valid bit is set and the requested tag matches the stored tag. The controller returns the requested block directly from the cache to the CPU.
+
+**Cache Miss:**
+
+A cache miss occurs when the selected cache line is invalid or its stored tag does not match the requested tag.
+
+On a read miss:
+
+1. The controller sends a read request to main memory.
 2. Main memory returns the requested 128-bit block.
-3. The controller stores the returned data in the selected cache line.
-4. The requested tag is updated.
-5. The valid bit is set to `1`.
-6. The data is returned to the CPU.
+3. The controller stores the returned block in the selected cache line.
+4. The corresponding tag is updated.
+5. The valid bit is set to 1.
+6. The requested data is returned to the CPU.
 
 ### 3.2 Write-Through Policy
 
-The design implements a **write-through** policy:
-- **Write Hit:** Both the corresponding cache line and main memory are updated simultaneously.
-- **Write Miss:** The write operation is sent directly to main memory.
 
-This ensures main memory is always kept up to date with the latest written data.
+The design implements a write-through policy.
+
+Whenever the CPU performs a write operation, the updated data is sent to main memory.
+
+For a write hit:
+- Main memory is updated.
+- The corresponding cache line is also updated.
+- The cache and main memory therefore contain the updated block.
 
 ### 3.3 No-Write-Allocate Policy
 
-For a write miss, the controller uses a **no-write-allocate** policy:
+
+The design uses a no-write-allocate policy for write misses.
+
+When the CPU writes to a block that is not present in the cache:
+
 - The write request is sent directly to main memory.
-- The cache line is not allocated, and its data, tag, and valid bit are not modified.
-- A subsequent read to the same address will result in a cache miss and fetch the data from main memory.
+- The cache line is not allocated or refilled.
+- The valid bit, tag, and cached data are not modified for that write miss.
 
----
+If the CPU subsequently reads the same block, it results in a cache miss and the block is fetched from main memory.
 
-## 4. Finite State Machine Design
+### 3.4 Cache Hit Detection
 
-The cache controller uses a nine-state FSM encoded using a 4-bit state register.
+The cache comparator generates a cache hit signal using the following condition:
+
+cache_hit = valid_bit AND (requested_tag == stored_tag)
+
+A cache hit is possible only when the selected cache line is valid and its stored tag matches the requested tag.
+
+## 4. Finite State Machine (FSM)
+
+### 4.1 Overview
+
+The cache controller uses a Finite State Machine (FSM) consisting of nine states. The FSM controls the sequence of operations required to process CPU read and write requests.
+
+The controller uses a 4-bit state register to represent the nine states.
+
+### 4.2 FSM State Description
 
 | State | Encoding | Function |
 |---|---:|---|
-| `IDLE` | `0000` | Waits for a CPU request |
-| `LOOKUP` | `0001` | Allows cache RAM lookup |
-| `CHECK` | `0010` | Checks valid bit and tag match |
-| `READ_REQ` | `0011` | Issues a main memory read request |
-| `READ_WAIT` | `0100` | Waits for the memory response |
-| `REFILL` | `0101` | Updates cache data, tag, and valid bit |
-| `WRITE_REQ` | `0110` | Issues a main memory write request |
-| `WRITE_WAIT` | `0111` | Waits for write completion |
-| `COMPLETE` | `1000` | Signals CPU request completion |
+| IDLE | 0 | Waits for a CPU request |
+| LOOKUP | 1 | Allows cache RAMs to read the selected cache line |
+| CHECK | 2 | Checks the valid bit and compares the requested and stored tags |
+| READ_REQ | 3 | Issues a read request to main memory |
+| READ_WAIT | 4 | Waits for main memory to complete the read |
+| REFILL | 5 | Writes the returned block, tag, and valid bit into the cache |
+| WRITE_REQ | 6 | Issues a write request to main memory and updates cache data on a write hit |
+| WRITE_WAIT | 7 | Waits for main memory to complete the write |
+| COMPLETE | 8 | Signals completion to the CPU and returns read data when applicable |
 
-### 4.1 FSM Operation Sequences
+### 4.3 State Transitions
 
-- **Read Hit:**  
-  `IDLE` → `LOOKUP` → `CHECK` → `COMPLETE` → `IDLE`
-- **Read Miss:**  
-  `IDLE` → `LOOKUP` → `CHECK` → `READ_REQ` → `READ_WAIT` → `REFILL` → `COMPLETE` → `IDLE`
-- **Write Hit:**  
-  `IDLE` → `LOOKUP` → `CHECK` → `WRITE_REQ` → `WRITE_WAIT` → `COMPLETE` → `IDLE`
-- **Write Miss:**  
-  `IDLE` → `LOOKUP` → `CHECK` → `WRITE_REQ` → `WRITE_WAIT` → `COMPLETE` → `IDLE`
+The FSM follows these transitions:
 
-*(For a write miss, the controller does not refill or allocate a cache line).*
+**Read Hit:**
 
----
+IDLE → LOOKUP → CHECK → COMPLETE → IDLE
 
+When the requested block is present in the cache and its tag matches, the controller returns the cached data without accessing main memory.
+
+**Read Miss:**
+
+IDLE → LOOKUP → CHECK → READ_REQ → READ_WAIT → REFILL → COMPLETE → IDLE
+
+When a read miss occurs, the controller fetches the block from main memory and stores it in the cache before completing the request.
+
+**Write Hit:**
+
+IDLE → LOOKUP → CHECK → WRITE_REQ → WRITE_WAIT → COMPLETE → IDLE
+
+The controller updates the cache data and sends the write request to main memory.
+
+**Write Miss:**
+
+IDLE → LOOKUP → CHECK → WRITE_REQ → WRITE_WAIT → COMPLETE → IDLE
+
+The controller writes directly to main memory without allocating a new cache line.
+
+### 4.4 FSM Control Signals
+
+The FSM generates control signals to coordinate cache and memory operations.
+
+| Control Signal | Function |
+|---|---|
+| tag_we | Enables writing the tag RAM |
+| valid_we | Enables updating the valid-bit RAM |
+| data_we | Enables writing the cache data RAM |
+| valid_in | Supplies the valid bit value |
+| mem_req | Initiates a main memory request |
+| mem_write_en | Selects memory read or write operation |
+| cpu_ready | Indicates completion of the CPU request |
+
+### 4.5 FSM Design Benefits
+
+- Separates cache lookup, memory access, and completion into distinct states.
+- Makes cache hit and miss handling easier to manage.
+- Provides clear control over cache refill operations.
+- Supports write-through and no-write-allocate policies.
+- Simplifies the verification of individual cache operations.
+
+Separates cache lookup, memory access, and completion into distinct states.
+Makes cache hit and miss handling easier to manage.
+Provides clear control over cache refill operations.
+Supports write-through and no-write-allocate policies.
+Simplifies the verification of individual cache operations.
 ## 5. Verilog Module Description
 
-The project consists of eight RTL modules:
 
-| Module | File | Responsibility |
-|---|---|---|
-| **Address Decoder** | `src/address_decoder.v` | Extracts tag, index, and offset |
-| **Cache Tag RAM** | `src/cache_tag_ram.v` | Stores 22-bit tags for 64 lines |
-| **Cache Valid RAM** | `src/cache_valid_ram.v` | Stores 1-bit valid flags for 64 lines |
-| **Cache Data RAM** | `src/cache_data_ram.v` | Stores 128-bit cache blocks for 64 lines |
-| **Tag Comparator** | `src/tag_comparator.v` | Compares requested and stored tags |
-| **Main Memory** | `src/main_memory.v` | Behavioral main memory model |
-| **Cache Controller** | `src/cache_controller.v` | Implements the nine-state FSM |
-| **Top Module** | `src/top_module.v` | Integrates all RTL components |
+The project is divided into multiple Verilog modules to maintain modularity, readability, and ease of verification.
 
-### Main Memory Model
-The behavioral main memory contains 256 entries, each storing 128 bits. It supports block-level read and write requests and generates a ready signal when an operation completes. The model uses the lower eight bits of the 28-bit block address (`block_addr[7:0]`) to index its storage array. Consequently, it is a simplified memory model and may exhibit address aliasing.
+### 5.1 Address Decoder (`address_decoder.v`)
 
----
+Extracts the tag, index, and offset fields from the 32-bit CPU address.
+
+### 5.2 Cache Tag RAM (`cache_tag_ram.v`)
+
+Stores the 22-bit tag associated with each of the 64 cache lines. Supports synchronous read and write operations.
+
+### 5.3 Cache Valid RAM (`cache_valid_ram.v`)
+
+Maintains one valid bit for each cache line. All valid bits are cleared during reset.
+
+### 5.4 Cache Data RAM (`cache_data_ram.v`)
+
+Stores 128-bit data blocks for all 64 cache lines. Supports synchronous read and write operations.
+
+### 5.5 Tag Comparator (`tag_comparator.v`)
+
+Compares the requested tag with the stored tag. Generates a cache hit signal only when the valid bit is set and both tags match.
+
+### 5.6 Main Memory (`main_memory.v`)
+
+Models a behavioral main memory containing 256 blocks of 128 bits each. Supports block-level read and write operations and generates a ready signal when an operation completes.
+
+### 5.7 Cache Controller (`cache_controller.v`)
+
+Implements the nine-state FSM. Coordinates CPU requests, cache lookups, hit/miss detection, memory transactions, cache refills, and write operations.
+
+### 5.8 Top Module (`top_module.v`)
+
+Connects the cache controller, address decoder, tag RAM, valid RAM, data RAM, tag comparator, and main memory to form the complete cache system.
+
+### 5.9 Testbench (`cache_tb.v`)
+
+Provides clock and reset signals, generates CPU read and write requests, monitors outputs, checks expected results, counts memory requests, and generates waveform data for verification.
 
 ## 6. Project Directory Structure
 
+The project is organized into the following directories:
+
 ```text
-Direct_Mapped_Cache_Controller/
+Direct-Mapped-Cache-Project/
 │
 ├── src/
 │   ├── address_decoder.v
@@ -252,221 +353,150 @@ Direct_Mapped_Cache_Controller/
 │
 ├── simulation/
 │   ├── cache_sim
-│   ├── cache_waveform.vcd
-│   └── screenshots/
-│       ├── cache_replacement.png
-│       ├── read_hit.png
-│       ├── read_miss.png
-│       ├── simulation_results.png
-│       ├── write_hit.png
-│       └── write_miss.png
+│   └── cache_waveform.vcd
 │
 ├── documentation/
 │   ├── README.md
 │   ├── architecture_diagram.png
 │   └── Cache_Controller_IEEE_Paper.docx
 │
-├── report/
-│   ├── Cache_Controller_IEEE_Paper_Final.docx
-│   ├── Cache_Controller_IEEE_Paper_Final (2).pdf
-│   └── simulation_log.txt
-│
-├── Makefile
-├── .gitignore
-└── README.md
+└── report/
 ```
-
-Generated simulation executables and waveform files can be recreated when needed.
-
----
 
 ## 7. Simulation and Verification
 
+
 ### 7.1 Simulation Environment
 
-The project uses:
-- **Icarus Verilog (`iverilog`)** for compiling the RTL modules and testbench.
-- **VVP** for executing the compiled simulation.
-- **Surfer** for waveform inspection.
-- **Verilog testbench (`cache_tb.v`)** for generating requests and checking expected outputs.
 
-### 7.2 Compile the Design
+The design was developed and simulated using the following tools:
 
-Run using `make`:
-```bash
-make compile
-```
+- Icarus Verilog for RTL compilation.
+- VVP for executing the compiled simulation.
+- Surfer for viewing simulation waveforms.
+- Verilog testbench for generating input stimuli and checking outputs.
 
-Or invoke `iverilog` directly:
+### 7.2 Compilation
+
+The Verilog source files and testbench are compiled using Icarus Verilog.
+
 ```bash
 iverilog -g2012 -o simulation/cache_sim \
-  src/address_decoder.v \
-  src/cache_tag_ram.v \
-  src/cache_valid_ram.v \
-  src/cache_data_ram.v \
-  src/tag_comparator.v \
-  src/main_memory.v \
-  src/cache_controller.v \
-  src/top_module.v \
-  testbench/cache_tb.v
+src/address_decoder.v \
+src/cache_tag_ram.v \
+src/cache_valid_ram.v \
+src/cache_data_ram.v \
+src/tag_comparator.v \
+src/main_memory.v \
+src/cache_controller.v \
+src/top_module.v \
+testbench/cache_tb.v
 ```
 
-### 7.3 Run the Simulation
+### 7.3 Running the Simulation
 
-Run using `make`:
-```bash
-make simulate
-```
+The compiled simulation is executed using:
 
-Or execute directly with `vvp`:
 ```bash
 vvp simulation/cache_sim
-```
 
-The simulation generates a VCD waveform file: `simulation/cache_waveform.vcd`.
+
+The testbench generates CPU requests, monitors outputs, checks expected data values and selected internal cache and memory values, and counts main-memory requests. All assertion results are reported through check_test; failed checks increment test_failures.
+
+The testbench generates CPU requests, monitors the outputs, checks expected data values, and counts main memory requests.
 
 ### 7.4 Functional Test Scenarios
 
-| Test | Scenario | Expected Behavior |
+
+The following scenarios were verified using the Verilog testbench:
+
+| Test | Scenario | Expected behavior |
 |---|---|---|
-| **Test 1** | Read miss at `0x10` | Fetch block from main memory and refill cache |
-| **Test 2** | Read hit at `0x10` | Return cached data without another memory request |
-| **Test 3** | Write hit at `0x10` | Update cache and main memory |
-| **Test 4** | Read after write hit | Return updated cached data |
-| **Test 5** | Write miss at `0x20` | Update main memory without cache allocation |
-| **Test 6** | Read after write miss | Fetch updated block from main memory |
-| **Test 7A** | First block before replacement | Verify cache hit |
-| **Test 7B** | Conflicting block at `0x410` | Verify conflict miss and replacement |
-| **Test 7C** | First block after replacement | Verify reload miss |
+| 1 | Read miss at `0x10` | Fetch block from memory and refill cache |
+| 2 | Read hit at `0x10` | Return data from cache |
+| 3 | Write hit at `0x10` | Update cache and main memory |
+| 4 | Read after write hit | Return updated cached data |
+| 5 | Write miss at `0x20` | Write directly to main memory |
+| 6 | Read after write miss | Fetch updated block from main memory |
+| 7A | Read first block (`0x10`) | Confirm original block is present |
+| 7B | Read conflicting block (`0x410`) | Cause a cache miss and replace the existing block |
+| 7C | Read first block (`0x10`) again | Cause another miss and reload the evicted block |
 
-### 7.5 Assertion-Based Verification
+### 7.5 Simulation Results
 
-The testbench contains **11 automated checks**:
-- Six data and operation checks.
-- One no-write-allocate policy check.
-- Three conflict and replacement checks.
-- One total memory-request check.
+All the above test scenarios passed during simulation.
 
-The reusable `check_test` task reports each check as `PASS` or `FAIL`. Data comparisons use case equality (`===`) so unknown (`X`) values are treated as failures.
+| Verification | Result |
+|---|---|
+| Read miss | PASS |
+| Read hit | PASS |
+| Write hit | PASS |
+| Read after write | PASS |
+| Write miss | PASS |
+| Read after write miss | PASS |
+| First block before replacement | PASS |
+| Conflicting block access | PASS |
+| First block after replacement | PASS |
+| No-write-allocate policy | PASS |
+| Total memory request count | 6 (PASS) |
 
-The `test_failures` counter tracks failed checks. If any check fails, the testbench reports the failure count and terminates via `$fatal(1, "TESTBENCH FAILED");`. An overall `PASS` is reported only when all checks succeed.
+The conflict test verifies direct-mapped cache replacement. Addresses `0x10` and `0x410` map to the same cache index but have different tags. Accessing the second block replaces the first block. Accessing the first block again causes a cache miss and retrieves its data from main memory.
 
-### 7.6 Memory Request Verification
+### 7.6 Waveform Verification
 
-The testbench monitors main-memory requests to distinguish cache hits from misses:
+The testbench generates a Value Change Dump (VCD) file:
 
-| Access | Expected Total Memory Requests |
-|---|:---:|
-| Initial read miss | 1 |
-| Read hit | 1 |
-| Write hit | 2 |
-| Write miss | 3 |
-| Read after write miss | 4 |
-| First block hit in conflict test | 4 |
-| Conflicting block miss | 5 |
-| First block reload after replacement | 6 |
-
-The final simulation observed exactly **six main-memory requests**, matching the theoretical expected count.
-
-### 7.7 Final Simulation Results
-
-| Verification Item | Result |
-|---|:---:|
-| Read miss | **PASS** |
-| Read hit | **PASS** |
-| Write hit | **PASS** |
-| Read after write hit | **PASS** |
-| Write miss | **PASS** |
-| Read after write miss | **PASS** |
-| No-write-allocate policy | **PASS** |
-| Conflict replacement checks | **PASS** |
-| Total memory request count | **6 (PASS)** |
-| Assertion checks | **11 passed** |
-| Failed checks | **0** |
-| **Overall Result** | **PASS** |
-
-Console output from the testbench:
 ```text
---------------------------------
-TOTAL MEMORY REQUESTS = 6
-MEMORY REQUEST COUNT: PASS
---------------------------------
-OVERALL RESULT: PASS
-ALL TESTS PASSED SUCCESSFULLY
+simulation/cache_waveform.vcd
 ```
 
-Simulation screenshot:  
-![Simulation Results](simulation/screenshots/simulation_results.png)
+The waveform can be opened in Surfer to observe:
 
-### 7.8 Waveform Verification
+- Clock and reset signals.
+- CPU request and ready signals.
+- FSM state transitions.
+- Cache hit and valid-bit signals.
+- Cache tag, valid, and data write enables.
+- Main memory request and ready signals.
 
-The generated VCD file (`simulation/cache_waveform.vcd`) can be inspected using **Surfer** or **GTKWave**:
-
-```bash
-make waves
-```
-
-Key signals to observe:
-- Clock (`clk`) and Reset (`rst`).
-- CPU request (`cpu_req`) and ready (`cpu_ready`) handshakes.
-- CPU read and write control signals (`cpu_write`, `cpu_addr`, `cpu_write_data`, `cpu_read_data`).
-- FSM current state (`current_state`).
-- `tag_match` and `valid_bit`.
-- Cache RAM write enables (`tag_we`, `valid_we`, `data_we`).
-- Main memory interface (`mem_req`, `mem_write_en`, `mem_ready`, `mem_read_data`).
-
-Waveform captures are available under `simulation/screenshots/`:
-- `read_miss.png`
-- `read_hit.png`
-- `write_hit.png`
-- `write_miss.png`
-- `cache_replacement.png`
-
----
+Waveform inspection helps verify the timing and sequence of cache and memory operations.
 
 ## 8. Design Limitations and Assumptions
 
+The current implementation is a simplified behavioral model of a direct-mapped cache controller. The following limitations and assumptions apply:
+
 ### 8.1 Block-Based CPU Interface
-The CPU interface transfers complete 128-bit blocks. Individual byte and word accesses are not supported. The address decoder extracts the offset, but it is not used for byte- or word-level selection.
+
+The CPU interface transfers complete 128-bit cache blocks rather than individual bytes or words.
+
+The address decoder extracts the 4-bit block offset, but the offset is not used to select individual bytes because the current interface operates on complete blocks.
 
 ### 8.2 Simplified Main Memory
-The behavioral main memory contains 256 entries of 128 bits each. It uses the lower eight bits of the 28-bit block address for memory indexing, which limits the address space represented by the model and can cause aliasing.
 
-### 8.3 Fixed Memory Response
-The main memory model responds to requests in a single clock cycle. Variable memory latency and request backpressure are not modeled.
+The behavioral main memory contains 256 blocks, with each block storing 128 bits.
 
-### 8.4 Single Outstanding Request
-The controller processes one CPU request at a time. Pipelined or simultaneous outstanding requests are not supported.
+Although the memory address input is 28 bits wide, the current memory model uses only the lower 8 bits (`block_addr[7:0]`) to index its storage array. Therefore, it is a simplified memory model rather than a complete representation of the addressable memory space.
+
+### 8.3 Memory Response Timing
+
+The main memory model responds to a request in a single clock cycle by asserting its `ready` signal.
+
+The controller generates a one-cycle memory request pulse. This implementation assumes immediate request acceptance and does not model variable memory latency or request backpressure.
+
+### 8.4 Single Outstanding CPU Request
+
+The controller handles one CPU request at a time. A new request is issued only after the previous operation completes and the controller returns to the IDLE state.
+
+Back-to-back requests and pipelined CPU operations are not supported.
 
 ### 8.5 Cache RAM Initialization
-The tag and data RAM arrays are not explicitly initialized during reset. All valid bits are cleared during reset, so uninitialized tag and data values are ignored until a cache line becomes valid.
+
+The tag and data RAM arrays are not explicitly initialized during reset. However, all cache valid bits are cleared during reset.
+
+Consequently, uninitialized tag and data values are ignored until a cache line is marked valid.
 
 ### 8.6 Scope of Verification
-These tests cover the selected scenarios only and do not constitute exhaustive or formal verification.
 
----
+The design has been tested using directed testbench scenarios covering read hits, read misses, write hits, write misses, no-write-allocate behavior, and cache replacement.
 
-## 9. Future Scope
-
-The current implementation can be extended in several ways:
-1. **Byte and Word-Level Access:** Utilize the block offset bits to support byte, halfword, and word reads/writes.
-2. **Main Memory Capacity:** Increase main memory depth and address decoding.
-3. **Realistic Memory Latency:** Model variable multicycle memory latency, burst transfers, and wait states.
-4. **Pipelining:** Support pipelined transactions and multiple outstanding memory requests.
-5. **Set-Associative Organization:** Implement 2-way or 4-way set-associative cache with LRU / pseudo-LRU replacement policies to mitigate conflict misses.
-6. **Performance Metrics:** Add hardware performance counters to compute cache hit rates, miss penalties, and average memory access time (AMAT).
-7. **Advanced Verification:** Introduce constrained-random stimulus and SystemVerilog assertions (SVA).
-
----
-
-## 10. References
-
-1. D. A. Patterson and J. L. Hennessy, *Computer Organization and Design: The Hardware/Software Interface*, RISC-V ed., 2nd ed. Cambridge, MA, USA: Morgan Kaufmann, 2020.
-2. *IEEE Standard for Verilog Hardware Description Language*, IEEE Std 1364-2005, 2006.
-3. Icarus Verilog Project, [Icarus Verilog Documentation](https://steveicarus.github.io/iverilog/).
-
----
-
-**Project:** Direct-Mapped Cache Controller Using Verilog HDL  
-**Institution:** Rishihood University  
-**Verification:** Icarus Verilog — 11 checks passed, 6 main-memory requests, 0 failed checks.
+These tests verify the selected functional scenarios but do not constitute exhaustive or  formal verification of every possible input and timing condition.
