@@ -1,4 +1,3 @@
-VCD info: dumpfile simulation/cache_waveform.vcd opened for output.
 Time=0 | Reset=1 | Request=0 | Write=0 | Ready=x | Read Data=xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 Time=5000 | Reset=1 | Request=0 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
 Time=20000 | Reset=0 | Request=0 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
@@ -50,14 +49,14 @@ Time=365000 | Reset=0 | Request=0 | Write=0 | Ready=0 | Read Data=00000000000000
 CONFLICT TEST - FIRST BLOCK
 Time=370000 | Reset=0 | Request=1 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
 Time=395000 | Reset=0 | Request=1 | Write=0 | Ready=1 | Read Data=aabbccddeeff00112233445566778899
-FIRST BLOCK: PASS
+CONFLICT TEST - FIRST BLOCK HIT: PASS
 Time=396000 | Reset=0 | Request=0 | Write=0 | Ready=1 | Read Data=aabbccddeeff00112233445566778899
 Time=405000 | Reset=0 | Request=0 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
 CONFLICT TEST - SECOND BLOCK
 Time=410000 | Reset=0 | Request=1 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
 MEMORY REQUEST DETECTED at time 445000
 Time=465000 | Reset=0 | Request=1 | Write=0 | Ready=1 | Read Data=41414141414141414141414141414141
-SECOND BLOCK: PASS
+CONFLICT TEST - SECOND BLOCK MISS: PASS
 Time=466000 | Reset=0 | Request=0 | Write=0 | Ready=1 | Read Data=41414141414141414141414141414141
 Time=475000 | Reset=0 | Request=0 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
 CONFLICT TEST - FIRST BLOCK AFTER REPLACEMENT
@@ -65,7 +64,7 @@ Time=480000 | Reset=0 | Request=1 | Write=0 | Ready=0 | Read Data=00000000000000
 MEMORY REQUEST DETECTED at time 515000
 Time=535000 | Reset=0 | Request=1 | Write=0 | Ready=1 | Read Data=aabbccddeeff00112233445566778899
 Returned Data = aabbccddeeff00112233445566778899
-CONFLICT TEST: PASS
+CONFLICT TEST - FIRST BLOCK RELOAD: PASS
 Time=536000 | Reset=0 | Request=0 | Write=0 | Ready=1 | Read Data=aabbccddeeff00112233445566778899
 Time=545000 | Reset=0 | Request=0 | Write=0 | Ready=0 | Read Data=00000000000000000000000000000000
 --------------------------------
@@ -74,4 +73,4 @@ MEMORY REQUEST COUNT: PASS
 --------------------------------
 OVERALL RESULT: PASS
 ALL TESTS PASSED SUCCESSFULLY
-testbench/cache_tb.v:315: $finish called at 550000 (1ps)
+testbench/cache_tb.v:323: $finish called at 550000 (1ps)
