@@ -63,7 +63,7 @@ A walkthrough of the simulation, waveform analysis, and FSM transitions is avail
 
 ### 2.1 Architecture Diagram
 
-![Direct-Mapped Cache Architecture](documentation/architecture_diagram.png)
+![Direct-Mapped Cache Architecture](architecture_diagram.png)
 
 The architecture consists of an address decoder, cache tag RAM, cache valid RAM, cache data RAM, tag comparator, cache controller, and behavioral main memory.
 
